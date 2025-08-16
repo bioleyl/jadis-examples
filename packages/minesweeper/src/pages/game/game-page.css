@@ -1,0 +1,40 @@
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.face {
+  font-size: 5rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.footer {
+  display: flex;
+  gap: 10px;
+}
+
+.game-status {
+  display: none;
+  font-size: 1.5rem;
+  padding: 1rem;
+}
+
+.game-over {
+  color: red;
+}
+
+.game-won {
+  color: green;
+}

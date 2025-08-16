@@ -1,0 +1,31 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.title {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.difficulty-selection {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.difficulty-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #007bff;
+  color: white;
+}
