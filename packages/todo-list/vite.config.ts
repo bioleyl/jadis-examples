@@ -6,4 +6,5 @@ export default {
   build: {
     outDir: '../../public/todo-list',
   },
+  base: '/jadis-examples/todo-list/',
 };

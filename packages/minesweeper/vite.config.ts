@@ -6,4 +6,5 @@ export default {
   build: {
     outDir: '../../public/minesweeper',
   },
+  base: '/jadis-examples/minesweeper/',
 };
