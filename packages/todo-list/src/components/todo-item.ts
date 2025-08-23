@@ -1,4 +1,4 @@
-import { html, css, Jadis } from '@jadis/core';
+import { css, html, Jadis } from '@jadis/core';
 
 const style = css`
   .todo-item {

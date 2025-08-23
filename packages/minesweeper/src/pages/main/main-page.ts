@@ -1,7 +1,8 @@
 import { createElement, html, Jadis } from '@jadis/core';
-import style from './main-page.css?inline';
+
 import { myRouter } from '../../router';
 import { GameDifficulty } from '../../types/game.type';
+import style from './main-page.css?inline';
 
 class MainPage extends Jadis {
   static readonly selector = 'minesweeper-main-page';

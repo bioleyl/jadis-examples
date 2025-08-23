@@ -3,8 +3,8 @@ import { baseConfig } from '../../vite.base';
 
 export default {
   ...baseConfig,
+  base: '/jadis-examples/minesweeper/',
   build: {
     outDir: '../../public/minesweeper',
   },
-  base: '/jadis-examples/minesweeper/',
 };

@@ -1,6 +1,7 @@
 import { html, Jadis } from '@jadis/core';
-import style from './main-page.css?inline';
+
 import { TodoList } from '../../components';
+import style from './main-page.css?inline';
 
 export class MainPage extends Jadis {
   static readonly selector = 'todo-list-main-page';

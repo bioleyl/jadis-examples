@@ -1,8 +1,10 @@
-import { html, css, Jadis } from '@jadis/core';
-import { TodoAdd } from './todo-add';
+import { css, html, Jadis } from '@jadis/core';
+
 import { TodoService } from '../services/todo.service';
+import { TodoAdd } from './todo-add';
 import { TodoItem } from './todo-item';
-import { Todo } from '../types/todo.type';
+
+import type { Todo } from '../types/todo.type';
 
 const style = css`
   :host {

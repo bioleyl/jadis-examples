@@ -1,17 +1,21 @@
 {
   "name": "jadis-examples",
-  "private": true,    
+  "private": true,
   "packageManager": "pnpm@10.14.0",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "pnpm -r run build"
+    "build": "pnpm -r run build",
+    "check": "biome check"
   },
   "pnpm": {
     "overrides": {
-      "@jadis/core": "0.5.0",
+      "@jadis/core": "0.5.1",
       "typescript": "5.9.2",
       "vite": "7.1.2"
     }
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.0"
   }
 }

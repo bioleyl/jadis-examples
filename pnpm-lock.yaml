@@ -5,19 +5,23 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@jadis/core': 0.5.0
+  '@jadis/core': 0.5.1
   typescript: 5.9.2
   vite: 7.1.2
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      '@biomejs/biome':
+        specifier: ^2.2.0
+        version: 2.2.0
 
   packages/minesweeper:
     devDependencies:
       '@jadis/core':
-        specifier: 0.5.0
-        version: 0.5.0
+        specifier: 0.5.1
+        version: 0.5.1
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -28,8 +32,8 @@ importers:
   packages/todo-list:
     devDependencies:
       '@jadis/core':
-        specifier: 0.5.0
-        version: 0.5.0
+        specifier: 0.5.1
+        version: 0.5.1
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -38,6 +42,59 @@ importers:
         version: 7.1.2
 
 packages:
+
+  '@biomejs/biome@2.2.0':
+    resolution: {integrity: sha512-3On3RSYLsX+n9KnoSgfoYlckYBoU6VRM22cw1gB4Y0OuUVSYd/O/2saOJMrA4HFfA1Ff0eacOvMN1yAAvHtzIw==}
+    engines: {node: '>=14.21.3'}
+    hasBin: true
+
+  '@biomejs/cli-darwin-arm64@2.2.0':
+    resolution: {integrity: sha512-zKbwUUh+9uFmWfS8IFxmVD6XwqFcENjZvEyfOxHs1epjdH3wyyMQG80FGDsmauPwS2r5kXdEM0v/+dTIA9FXAg==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@biomejs/cli-darwin-x64@2.2.0':
+    resolution: {integrity: sha512-+OmT4dsX2eTfhD5crUOPw3RPhaR+SKVspvGVmSdZ9y9O/AgL8pla6T4hOn1q+VAFBHuHhsdxDRJgFCSC7RaMOw==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@biomejs/cli-linux-arm64-musl@2.2.0':
+    resolution: {integrity: sha512-egKpOa+4FL9YO+SMUMLUvf543cprjevNc3CAgDNFLcjknuNMcZ0GLJYa3EGTCR2xIkIUJDVneBV3O9OcIlCEZQ==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@biomejs/cli-linux-arm64@2.2.0':
+    resolution: {integrity: sha512-6eoRdF2yW5FnW9Lpeivh7Mayhq0KDdaDMYOJnH9aT02KuSIX5V1HmWJCQQPwIQbhDh68Zrcpl8inRlTEan0SXw==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@biomejs/cli-linux-x64-musl@2.2.0':
+    resolution: {integrity: sha512-I5J85yWwUWpgJyC1CcytNSGusu2p9HjDnOPAFG4Y515hwRD0jpR9sT9/T1cKHtuCvEQ/sBvx+6zhz9l9wEJGAg==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [linux]
+
+  '@biomejs/cli-linux-x64@2.2.0':
+    resolution: {integrity: sha512-5UmQx/OZAfJfi25zAnAGHUMuOd+LOsliIt119x2soA2gLggQYrVPA+2kMUxR6Mw5M1deUF/AWWP2qpxgH7Nyfw==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [linux]
+
+  '@biomejs/cli-win32-arm64@2.2.0':
+    resolution: {integrity: sha512-n9a1/f2CwIDmNMNkFs+JI0ZjFnMO0jdOyGNtihgUNFnlmd84yIYY2KMTBmMV58ZlVHjgmY5Y6E1hVTnSRieggA==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@biomejs/cli-win32-x64@2.2.0':
+    resolution: {integrity: sha512-Nawu5nHjP/zPKTIryh2AavzTc/KEg4um/MxWdXW0A6P/RZOyIpa7+QSjeXwAwX/utJGaCoXRPWtF3m5U/bB3Ww==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [win32]
 
   '@esbuild/aix-ppc64@0.25.9':
     resolution: {integrity: sha512-OaGtL73Jck6pBKjNIe24BnFE6agGl+6KxDtTfHhy1HmhthfKouEcOhqpSL64K4/0WCtbKFLOdzD/44cJ4k9opA==}
@@ -195,8 +252,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@jadis/core@0.5.0':
-    resolution: {integrity: sha512-JG/LfjTXqzob9WA+RPIZF4Ht3i1DCAbHKg5WTbyz0FUcnYm1zzQFHKl3crLi75USlSXmkAivJVKGLjrx9HlOMQ==}
+  '@jadis/core@0.5.1':
+    resolution: {integrity: sha512-btm2kxRHOcbyF7liDH1DTulvz3uYAUptYGwvrVVzrFWllFohF26Hju/rx7xVHBZBKoeW2mqN354w9wNzcX4I9g==}
 
   '@rollup/rollup-android-arm-eabi@4.46.2':
     resolution: {integrity: sha512-Zj3Hl6sN34xJtMv7Anwb5Gu01yujyE/cLBDB2gnHTAHaWS1Z38L7kuSG+oAh0giZMqG060f/YBStXtMH6FvPMA==}
@@ -396,6 +453,41 @@ packages:
 
 snapshots:
 
+  '@biomejs/biome@2.2.0':
+    optionalDependencies:
+      '@biomejs/cli-darwin-arm64': 2.2.0
+      '@biomejs/cli-darwin-x64': 2.2.0
+      '@biomejs/cli-linux-arm64': 2.2.0
+      '@biomejs/cli-linux-arm64-musl': 2.2.0
+      '@biomejs/cli-linux-x64': 2.2.0
+      '@biomejs/cli-linux-x64-musl': 2.2.0
+      '@biomejs/cli-win32-arm64': 2.2.0
+      '@biomejs/cli-win32-x64': 2.2.0
+
+  '@biomejs/cli-darwin-arm64@2.2.0':
+    optional: true
+
+  '@biomejs/cli-darwin-x64@2.2.0':
+    optional: true
+
+  '@biomejs/cli-linux-arm64-musl@2.2.0':
+    optional: true
+
+  '@biomejs/cli-linux-arm64@2.2.0':
+    optional: true
+
+  '@biomejs/cli-linux-x64-musl@2.2.0':
+    optional: true
+
+  '@biomejs/cli-linux-x64@2.2.0':
+    optional: true
+
+  '@biomejs/cli-win32-arm64@2.2.0':
+    optional: true
+
+  '@biomejs/cli-win32-x64@2.2.0':
+    optional: true
+
   '@esbuild/aix-ppc64@0.25.9':
     optional: true
 
@@ -474,7 +566,7 @@ snapshots:
   '@esbuild/win32-x64@0.25.9':
     optional: true
 
-  '@jadis/core@0.5.0': {}
+  '@jadis/core@0.5.1': {}
 
   '@rollup/rollup-android-arm-eabi@4.46.2':
     optional: true

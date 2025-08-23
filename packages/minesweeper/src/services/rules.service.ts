@@ -1,4 +1,6 @@
-import { GameDifficulty, GameStates, GridSize } from '../types/game.type';
+import { GameDifficulty } from '../types/game.type';
+
+import type { GameStates, GridSize } from '../types/game.type';
 
 const GRID_SIZES: Record<GameDifficulty, GridSize> = {
   [GameDifficulty.Easy]: [8, 8],
@@ -13,22 +15,24 @@ const BOMB_COUNT: Record<GameDifficulty, number> = {
 };
 
 const FACES: Record<GameStates, string> = {
+  lost: '😢',
   playing: '🙂',
   trying: '😐',
-  lost: '😢',
   won: '😄',
 };
 
-export class RulesService {
-  static getGridByDifficulty(difficulty: GameDifficulty): GridSize {
-    return GRID_SIZES[difficulty] || GRID_SIZES[GameDifficulty.Easy];
-  }
-
-  static getBombCountByDifficulty(difficulty: GameDifficulty): number {
+export const rules = {
+  getBombCountByDifficulty(difficulty: GameDifficulty): number {
     return BOMB_COUNT[difficulty] || BOMB_COUNT[GameDifficulty.Easy];
-  }
+  },
 
-  static getTextColorByBombCount(bombCount: number): string {
+  getFaceByState(state: GameStates): string {
+    return FACES[state] || FACES.playing;
+  },
+  getGridByDifficulty(difficulty: GameDifficulty): GridSize {
+    return GRID_SIZES[difficulty] || GRID_SIZES[GameDifficulty.Easy];
+  },
+  getTextColorByBombCount(bombCount: number): string {
     switch (bombCount) {
       case 1:
         return 'blue';
@@ -49,9 +53,5 @@ export class RulesService {
       default:
         return 'black';
     }
-  }
-
-  static getFaceByState(state: GameStates): string {
-    return FACES[state] || FACES.playing;
-  }
-}
+  },
+};

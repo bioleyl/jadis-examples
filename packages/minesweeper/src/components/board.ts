@@ -1,7 +1,9 @@
-import { Jadis, css, createElement, assert, html } from '@jadis/core';
-import { CellComponent } from './cell';
-import { GameStates, GridSize } from '../types/game.type';
+import { assert, createElement, css, html, Jadis } from '@jadis/core';
+
 import { appBus } from '../services/bus.service';
+import { CellComponent } from './cell';
+
+import type { GameStates, GridSize } from '../types/game.type';
 
 const style = css`
   .board {
@@ -53,7 +55,9 @@ export class BoardComponent extends Jadis {
     const bombPositions = this.getRndBombPositions(this._bombCount, [row, col]);
     bombPositions.forEach((cell) => {
       cell.bomb = true;
-      this.getNeighboringCells(cell).forEach((n) => n.addNeighborBombCount());
+      this.getNeighboringCells(cell).forEach((n) => {
+        n.addNeighborBombCount();
+      });
     });
   }
 
@@ -78,7 +82,9 @@ export class BoardComponent extends Jadis {
   private buildRow(y: number): HTMLDivElement {
     const [_, col] = this._boardSize;
     const row = createElement('div', { class: 'grid-row' });
-    Array.from({ length: col }).forEach((_, x) => this.buildCell(x, y, row));
+    Array.from({ length: col }).forEach((_, x) => {
+      this.buildCell(x, y, row);
+    });
     return row;
   }
 
@@ -113,7 +119,9 @@ export class BoardComponent extends Jadis {
   }
 
   private cellClicked(cell: CellComponent): void {
-    this.cellsToReveal(cell).forEach((c) => c.reveal());
+    this.cellsToReveal(cell).forEach((c) => {
+      c.reveal();
+    });
     this.checkWinCondition();
   }
 
@@ -122,7 +130,11 @@ export class BoardComponent extends Jadis {
       ? stack
       : this.getNeighboringCells(cell)
           .filter((n) => !n.isRevealed && !n.isFlagged && !stack.has(n))
-          .reduce((acc, n) => this.cellsToReveal(n, new Set([n, ...acc])), stack);
+          .reduce((acc, n) => {
+            const newStack = new Set(acc);
+            newStack.add(n);
+            return this.cellsToReveal(n, newStack);
+          }, stack);
   }
 
   private checkWinCondition(): void {

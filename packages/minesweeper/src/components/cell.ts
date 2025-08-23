@@ -1,7 +1,9 @@
 import { css, html, Jadis } from '@jadis/core';
-import type { CellCoordinates } from '../types/game.type';
+
 import { appBus } from '../services/bus.service';
-import { RulesService } from '../services/rules.service';
+import { rules } from '../services/rules.service';
+
+import type { CellCoordinates } from '../types/game.type';
 
 const style = css`
   :host {
@@ -98,18 +100,11 @@ export class CellComponent extends Jadis {
   }
 
   private get formattedText(): string {
-    return this._neighborBombCount > 0
-      ? this._neighborBombCount.toString()
-      : '';
+    return this._neighborBombCount > 0 ? this._neighborBombCount.toString() : '';
   }
 
   private onMouseDown(evt: MouseEvent): void {
-    if (
-      this._gameOver ||
-      this.isRevealed ||
-      evt.button !== 0 ||
-      this._isFlagged
-    ) {
+    if (this._gameOver || this.isRevealed || evt.button !== 0 || this._isFlagged) {
       return;
     }
     this._isPushed = true;
@@ -141,9 +136,7 @@ export class CellComponent extends Jadis {
   private revealNormal(): void {
     const content = this.getElement('.content');
     content.textContent = this.formattedText;
-    content.style.color = RulesService.getTextColorByBombCount(
-      this._neighborBombCount
-    );
+    content.style.color = rules.getTextColorByBombCount(this._neighborBombCount);
   }
 
   private onGameWon(): void {

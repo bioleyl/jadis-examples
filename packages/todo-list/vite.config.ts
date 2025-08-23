@@ -3,8 +3,8 @@ import { baseConfig } from '../../vite.base';
 
 export default {
   ...baseConfig,
+  base: '/jadis-examples/todo-list/',
   build: {
     outDir: '../../public/todo-list',
   },
-  base: '/jadis-examples/todo-list/',
 };

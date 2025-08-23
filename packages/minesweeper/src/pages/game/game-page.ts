@@ -1,15 +1,18 @@
 import { assert, html, Jadis } from '@jadis/core';
-import style from './game-page.css?inline';
-import { myRouter } from '../../router';
-import { GameDifficulty, GameStates, GridSize } from '../../types/game.type';
-import { RulesService } from '../../services/rules.service';
+
 import { BoardComponent } from '../../components/board';
+import { myRouter } from '../../router';
 import { appBus } from '../../services/bus.service';
+import { rules } from '../../services/rules.service';
+import { GameDifficulty } from '../../types/game.type';
+import style from './game-page.css?inline';
+
+import type { GameStates, GridSize } from '../../types/game.type';
 
 class GamePage extends Jadis {
   static readonly selector = 'minesweeper-game-page';
-  private boardSize: GridSize = [0, 0];
-  private bombCount = 0;
+  private _boardSize: GridSize = [0, 0];
+  private _bombCount = 0;
 
   onConnect(): void {
     this.on(this.backButton, 'click', () => myRouter.gotoName('MainPage'));
@@ -18,8 +21,8 @@ class GamePage extends Jadis {
     this.onBus(appBus, 'gameWon', this.gameWon.bind(this));
     this.boardComponent.events.register('fcChange', this.fcChanged.bind(this));
     this.boardComponent.events.register('state', this.setFaceState.bind(this));
-    this.boardSize = RulesService.getGridByDifficulty(this.difficulty);
-    this.bombCount = RulesService.getBombCountByDifficulty(this.difficulty);
+    this._boardSize = rules.getGridByDifficulty(this.difficulty);
+    this._bombCount = rules.getBombCountByDifficulty(this.difficulty);
     this.startGame();
   }
 
@@ -67,7 +70,7 @@ class GamePage extends Jadis {
 
   private setFaceState(state: GameStates): void {
     const face = this.getElement('.face');
-    face.textContent = RulesService.getFaceByState(state);
+    face.textContent = rules.getFaceByState(state);
   }
 
   private isValidDifficulty(difficulty: string | null): difficulty is GameDifficulty {
@@ -78,8 +81,8 @@ class GamePage extends Jadis {
     this.resetButton.style.display = 'none';
     this.getElement('.game-over').style.display = 'none';
     this.getElement('.game-won').style.display = 'none';
-    this.minesLeft.textContent = `${this.bombCount}`;
-    this.boardComponent.init(this.boardSize, this.bombCount);
+    this.minesLeft.textContent = `${this._bombCount}`;
+    this.boardComponent.init(this._boardSize, this._bombCount);
     this.setFaceState('playing');
   }
 
@@ -96,7 +99,7 @@ class GamePage extends Jadis {
   }
 
   private fcChanged(count: number): void {
-    this.minesLeft.textContent = `${this.bombCount - count}`;
+    this.minesLeft.textContent = `${this._bombCount - count}`;
   }
 }
 
