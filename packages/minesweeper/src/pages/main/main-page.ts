@@ -24,7 +24,7 @@ class MainPage extends Jadis {
   }
 
   private buildButton(label: string, token: GameDifficulty): HTMLButtonElement {
-    const button = createElement('button', { class: 'difficulty-button' });
+    const button = createElement('button', { attrs: { class: 'difficulty-button' } });
     button.textContent = label;
     this.on(button, 'click', () => myRouter.gotoName('GamePage', { difficulty: token }));
     return button;

@@ -26,19 +26,33 @@ const style = css`
 export class TodoItem extends Jadis {
   static readonly selector = 'todo-item';
 
+  private readonly _refs = this.useRefs((ref) => ({
+    deleteButton: ref('.delete-button'),
+    inputElement: ref<HTMLInputElement>('.todo-checkbox'),
+    todoText: ref('.todo-text'),
+  }));
+
+  readonly checked = this.useChange(false, (val) => {
+    this._refs.inputElement.checked = val;
+  });
+
+  readonly text = this.useChange('', (val) => {
+    this._refs.todoText.textContent = val;
+  });
+
   events = this.useEvents<{
     delete: undefined;
     checked: boolean;
   }>();
 
   onConnect(): void {
-    this.on(this.deleteButton, 'click', () => {
+    this.on(this._refs.deleteButton, 'click', () => {
       this.events.emit('delete');
     });
 
-    this.on(this.inputElement, 'change', () => {
-      const isChecked = this.inputElement.checked;
-      this.events.emit('checked', isChecked);
+    this.on(this._refs.inputElement, 'change', () => {
+      this.checked.set(this._refs.inputElement.checked);
+      this.events.emit('checked', this.checked.get());
     });
   }
 
@@ -54,22 +68,6 @@ export class TodoItem extends Jadis {
 
   templateCss(): string {
     return style;
-  }
-
-  set text(text: string) {
-    this.todoText.textContent = text;
-  }
-
-  private get deleteButton(): HTMLButtonElement {
-    return this.getElement('.delete-button');
-  }
-
-  private get todoText(): HTMLElement {
-    return this.getElement('.todo-text');
-  }
-
-  private get inputElement(): HTMLInputElement {
-    return this.getElement('.todo-checkbox');
   }
 }
 

@@ -14,13 +14,39 @@ class GamePage extends Jadis {
   private _boardSize: GridSize = [0, 0];
   private _bombCount = 0;
 
+  private readonly _face = this.useChange<GameStates>(
+    'playing',
+    (state) => {
+      this._refs.face.textContent = rules.getFaceByState(state);
+    },
+    { immediate: true }
+  );
+
+  private readonly _flagCount = this.useChange<number>(
+    0,
+    (count) => {
+      this._refs.minesLeft.textContent = `${this._bombCount - count}`;
+    },
+    { immediate: true }
+  );
+
+  private readonly _refs = this.useRefs((ref) => ({
+    backButton: ref('#back'),
+    boardComponent: ref<BoardComponent>('board-component'),
+    face: ref('.face'),
+    gameOver: ref('.game-over'),
+    gameWon: ref('.game-won'),
+    minesLeft: ref('#mines-left'),
+    resetButton: ref('#reset'),
+  }));
+
   onConnect(): void {
-    this.on(this.backButton, 'click', () => myRouter.gotoName('MainPage'));
-    this.on(this.resetButton, 'click', this.startGame.bind(this));
+    this.on(this._refs.backButton, 'click', () => myRouter.gotoName('MainPage'));
+    this.on(this._refs.resetButton, 'click', this.startGame.bind(this));
     this.onBus(appBus, 'gameOver', this.gameOver.bind(this));
     this.onBus(appBus, 'gameWon', this.gameWon.bind(this));
-    this.boardComponent.events.register('fcChange', this.fcChanged.bind(this));
-    this.boardComponent.events.register('state', this.setFaceState.bind(this));
+    this._refs.boardComponent.events.register('fcChange', (count) => this._flagCount.set(count));
+    this._refs.boardComponent.events.register('state', (state) => this._face.set(state));
     this._boardSize = rules.getGridByDifficulty(this.difficulty);
     this._bombCount = rules.getBombCountByDifficulty(this.difficulty);
     this.startGame();
@@ -31,7 +57,7 @@ class GamePage extends Jadis {
       <div class="content">
         <div class="face"></div>
         <p>Mines to detect: <span id="mines-left">0</span></p>
-        ${BoardComponent.createElement()}
+        ${BoardComponent.toTemplate()}
         <div class="game-status game-over">Game Over!</div>
         <div class="game-status game-won">You won!</div>
         <div class="footer">
@@ -52,54 +78,28 @@ class GamePage extends Jadis {
     return difficulty;
   }
 
-  private get boardComponent(): BoardComponent {
-    return this.getElement('board-component');
-  }
-
-  private get backButton(): HTMLButtonElement {
-    return this.getElement('#back');
-  }
-
-  private get resetButton(): HTMLButtonElement {
-    return this.getElement('#reset');
-  }
-
-  private get minesLeft(): HTMLSpanElement {
-    return this.getElement('#mines-left');
-  }
-
-  private setFaceState(state: GameStates): void {
-    const face = this.getElement('.face');
-    face.textContent = rules.getFaceByState(state);
-  }
-
   private isValidDifficulty(difficulty: string | null): difficulty is GameDifficulty {
     return Object.values(GameDifficulty).includes(difficulty as GameDifficulty);
   }
 
   private startGame(): void {
-    this.resetButton.style.display = 'none';
-    this.getElement('.game-over').style.display = 'none';
-    this.getElement('.game-won').style.display = 'none';
-    this.minesLeft.textContent = `${this._bombCount}`;
-    this.boardComponent.init(this._boardSize, this._bombCount);
-    this.setFaceState('playing');
+    this._refs.resetButton.style.display = 'none';
+    this._refs.gameOver.style.display = 'none';
+    this._refs.gameWon.style.display = 'none';
+    this._refs.boardComponent.init(this._boardSize, this._bombCount);
+    this._face.set('playing');
   }
 
   private gameWon(): void {
-    this.resetButton.style.display = 'block';
-    this.getElement('.game-won').style.display = 'block';
-    this.setFaceState('won');
+    this._refs.resetButton.style.display = 'block';
+    this._refs.gameWon.style.display = 'block';
+    this._face.set('won');
   }
 
   private gameOver(): void {
-    this.resetButton.style.display = 'block';
-    this.getElement('.game-over').style.display = 'block';
-    this.setFaceState('lost');
-  }
-
-  private fcChanged(count: number): void {
-    this.minesLeft.textContent = `${this._bombCount - count}`;
+    this._refs.resetButton.style.display = 'block';
+    this._refs.gameOver.style.display = 'block';
+    this._face.set('lost');
   }
 }
 

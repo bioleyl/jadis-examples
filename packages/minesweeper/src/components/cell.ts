@@ -40,12 +40,25 @@ const style = css`
 
 export class CellComponent extends Jadis {
   static readonly selector = 'cell-component';
-  private _isFlagged = false;
   private _isBomb = false;
   private _neighborBombCount = 0;
   private _gameOver = false;
   private _isRevealed = false;
-  private _isPushed = false;
+
+  private readonly _isFlagged = this.useChange(false, (val) => {
+    this.events.emit(val ? 'flagged' : 'unflagged');
+    this._cellContent.set(val ? '🚩' : '');
+  });
+
+  private readonly _isPushed = this.useChange(false, (val) => this.events.emit(val ? 'pushed' : 'released'));
+
+  private readonly _cellContent = this.useChange('', (val) => {
+    this._refs.content.textContent = val;
+  });
+
+  private readonly _refs = this.useRefs((ref) => ({
+    content: ref('.content'),
+  }));
 
   coordinates: CellCoordinates = { x: 0, y: 0 };
   events = this.useEvents<{
@@ -78,7 +91,7 @@ export class CellComponent extends Jadis {
   }
 
   get isFlagged(): boolean {
-    return this._isFlagged;
+    return this._isFlagged.get();
   }
 
   get isRevealed(): boolean {
@@ -104,19 +117,17 @@ export class CellComponent extends Jadis {
   }
 
   private onMouseDown(evt: MouseEvent): void {
-    if (this._gameOver || this.isRevealed || evt.button !== 0 || this._isFlagged) {
+    if (this._gameOver || this.isRevealed || evt.button !== 0 || this._isFlagged.get()) {
       return;
     }
-    this._isPushed = true;
-    this.events.emit('pushed');
+    this._isPushed.set(true);
   }
 
   private onMouseUp(): void {
-    if (this._gameOver || this.isRevealed || !this._isPushed) {
+    if (this._gameOver || this.isRevealed || !this._isPushed.get()) {
       return;
     }
-    this._isPushed = false;
-    this.events.emit('released');
+    this._isPushed.set(false);
     this.handleLeftClick();
   }
 
@@ -124,19 +135,17 @@ export class CellComponent extends Jadis {
     if (this._gameOver || this.isRevealed || !this._isPushed) {
       return;
     }
-    this._isPushed = false;
-    this.events.emit('released');
+    this._isPushed.set(false);
   }
 
   private revealBomb(): void {
     this.classList.add('bomb');
-    this.getElement('.content').textContent = '💣';
+    this._cellContent.set('💣');
   }
 
   private revealNormal(): void {
-    const content = this.getElement('.content');
-    content.textContent = this.formattedText;
-    content.style.color = rules.getTextColorByBombCount(this._neighborBombCount);
+    this._cellContent.set(this.formattedText);
+    this._refs.content.style.color = rules.getTextColorByBombCount(this._neighborBombCount);
   }
 
   private onGameWon(): void {
@@ -149,7 +158,7 @@ export class CellComponent extends Jadis {
   }
 
   private handleLeftClick(): void {
-    if (this._isFlagged || this.isRevealed || this._gameOver) {
+    if (this._isFlagged.get() || this.isRevealed || this._gameOver) {
       return;
     }
     if (this._isBomb) {
@@ -165,9 +174,7 @@ export class CellComponent extends Jadis {
     if (this.isRevealed || this._gameOver) {
       return;
     }
-    this._isFlagged = !this._isFlagged;
-    this.getElement('.content').textContent = this._isFlagged ? '🚩' : '';
-    this.events.emit(this._isFlagged ? 'flagged' : 'unflagged');
+    this._isFlagged.set((v) => !v);
   }
 }
 

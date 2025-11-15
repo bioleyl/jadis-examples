@@ -28,7 +28,12 @@ export class BoardComponent extends Jadis {
   private readonly _cells: Map<string, CellComponent> = new Map();
   private _boardSize: GridSize = [0, 0];
   private _bombCount = 0;
-  private _flaggedCount = 0;
+
+  private readonly _flaggedCount = this.useChange(0, (count) => this.events.emit('fcChange', count));
+
+  private readonly _refs = this.useRefs((ref) => ({
+    board: ref('.board'),
+  }));
 
   events = this.useEvents<{
     fcChange: number;
@@ -46,7 +51,7 @@ export class BoardComponent extends Jadis {
   init(size: GridSize, bombCount: number): void {
     this._boardSize = size;
     this._bombCount = bombCount;
-    this._flaggedCount = 0;
+    this._flaggedCount.set(0);
     this.buildBoard();
   }
 
@@ -75,13 +80,13 @@ export class BoardComponent extends Jadis {
 
   private buildBoard(): void {
     const [row] = this._boardSize;
-    this.getElement('.board').replaceChildren(...Array.from({ length: row }).map((_, y) => this.buildRow(y)));
+    this._refs.board.replaceChildren(...Array.from({ length: row }).map((_, y) => this.buildRow(y)));
     this.dispatchBombs();
   }
 
   private buildRow(y: number): HTMLDivElement {
     const [_, col] = this._boardSize;
-    const row = createElement('div', { class: 'grid-row' });
+    const row = createElement('div', { attrs: { class: 'grid-row' } });
     Array.from({ length: col }).forEach((_, x) => {
       this.buildCell(x, y, row);
     });
@@ -89,33 +94,18 @@ export class BoardComponent extends Jadis {
   }
 
   private buildCell(x: number, y: number, row: HTMLDivElement): CellComponent {
-    const cell = CellComponent.createElement({ class: 'grid-cell' }, row);
-    cell.coordinates = { x, y };
+    const cell = createElement(
+      CellComponent,
+      { attrs: { class: 'grid-cell' }, props: { coordinates: { x, y } } },
+      row
+    );
     cell.events.register('clicked', this.cellClicked.bind(this, cell));
-    cell.events.register('flagged', this.flaggedCell.bind(this));
-    cell.events.register('unflagged', this.unflaggedCell.bind(this));
-    cell.events.register('pushed', this.cellPushed.bind(this));
-    cell.events.register('released', this.cellReleased.bind(this));
+    cell.events.register('flagged', () => this._flaggedCount.set((v) => v + 1));
+    cell.events.register('unflagged', () => this._flaggedCount.set((v) => v - 1));
+    cell.events.register('pushed', () => this.events.emit('state', 'trying'));
+    cell.events.register('released', () => this.events.emit('state', 'playing'));
     this._cells.set(this.buildCellKey(x, y), cell);
     return cell;
-  }
-
-  private cellPushed(): void {
-    this.events.emit('state', 'trying');
-  }
-
-  private cellReleased(): void {
-    this.events.emit('state', 'playing');
-  }
-
-  private flaggedCell(): void {
-    this._flaggedCount++;
-    this.events.emit('fcChange', this._flaggedCount);
-  }
-
-  private unflaggedCell(): void {
-    this._flaggedCount--;
-    this.events.emit('fcChange', this._flaggedCount);
   }
 
   private cellClicked(cell: CellComponent): void {

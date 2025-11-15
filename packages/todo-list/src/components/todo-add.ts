@@ -24,13 +24,18 @@ const style = css`
 export class TodoAdd extends Jadis {
   static readonly selector = 'todo-add';
 
+  private readonly _refs = this.useRefs((ref) => ({
+    addButton: ref('.add-button'),
+    inputElement: ref<HTMLInputElement>('.todo-input'),
+  }));
+
   events = this.useEvents<{
     add: string;
   }>();
 
   onConnect(): void {
-    this.on(this.addButton, 'click', () => this.onAddEvent());
-    this.on(this.inputElement, 'keydown', (event) => {
+    this.on(this._refs.addButton, 'click', () => this.onAddEvent());
+    this.on(this._refs.inputElement, 'keydown', (event) => {
       if (event.key === 'Enter') {
         this.onAddEvent();
       }
@@ -51,19 +56,11 @@ export class TodoAdd extends Jadis {
   }
 
   private onAddEvent(): void {
-    const value = this.inputElement.value.trim();
+    const value = this._refs.inputElement.value.trim();
     if (value) {
       this.events.emit('add', value);
-      this.inputElement.value = '';
+      this._refs.inputElement.value = '';
     }
-  }
-
-  private get addButton(): HTMLButtonElement {
-    return this.getElement('.add-button');
-  }
-
-  private get inputElement(): HTMLInputElement {
-    return this.getElement('.todo-input');
   }
 }
 
