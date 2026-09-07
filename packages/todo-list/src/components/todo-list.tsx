@@ -1,4 +1,4 @@
-import { css, html, Jadis } from '@jadis/core';
+import { css, Jadis } from '@jadis/core';
 
 import { TodoService } from '../services/todo.service';
 import { TodoAdd } from './todo-add';
@@ -25,20 +25,29 @@ const style = css`
 export class TodoList extends Jadis {
   static readonly selector = 'todo-list';
 
+  private readonly _refs = this.useRefs((ref) => ({
+    todoAddElement: ref<TodoAdd>('todo-add'),
+    todoListElement: ref('.todo-list'),
+  }));
+
   onConnect(): void {
-    this.todoAddElement.events.register('add', (text) => {
+    this._refs.todoAddElement.events.register('add', (text) => {
       const obj = TodoService.getInstance().add(text);
       this.appendTodo(obj);
     });
 
-    TodoService.getInstance().getAll().forEach(this.appendTodo.bind(this));
+    if (this._refs.todoListElement.childElementCount === 0) {
+      TodoService.getInstance().getAll().forEach(this.appendTodo.bind(this));
+    }
   }
 
-  templateHtml(): DocumentFragment {
-    return html`
-      <div class="todo-list"></div>
-      ${TodoAdd.createElement()}
-    `;
+  templateHtml(): Node {
+    return (
+      <>
+        <div class="todo-list" />
+        <TodoAdd />
+      </>
+    );
   }
 
   templateCss(): string {
@@ -46,28 +55,18 @@ export class TodoList extends Jadis {
   }
 
   private appendTodo(todo: Todo): void {
-    const element = new TodoItem();
-    element.text = todo.text;
+    const element = <TodoItem checked={todo.completed} text={todo.text} />;
+    this._refs.todoListElement.appendChild(element);
 
     element.events.register('delete', () => {
       TodoService.getInstance().delete(todo);
       element.remove();
     });
 
-    element.events.register('checked', (isChecked) => {
+    element.events.register('checked', (isChecked: boolean) => {
       todo.completed = isChecked;
       TodoService.getInstance().update(todo);
     });
-
-    this.todoListElement.appendChild(element);
-  }
-
-  private get todoAddElement(): TodoAdd {
-    return this.getElement('todo-add');
-  }
-
-  private get todoListElement(): HTMLElement {
-    return this.getElement('.todo-list');
   }
 }
 

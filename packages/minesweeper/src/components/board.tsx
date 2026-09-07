@@ -1,4 +1,4 @@
-import { assert, createElement, css, html, Jadis } from '@jadis/core';
+import { assert, css, Jadis } from '@jadis/core';
 
 import { appBus } from '../services/bus.service';
 import { CellComponent } from './cell';
@@ -40,8 +40,8 @@ export class BoardComponent extends Jadis {
     state: GameStates;
   }>();
 
-  templateHtml(): DocumentFragment {
-    return html`<div class="board"></div>`;
+  templateHtml(): Node {
+    return <div class="board" />;
   }
 
   templateCss(): string {
@@ -80,13 +80,14 @@ export class BoardComponent extends Jadis {
 
   private buildBoard(): void {
     const [row] = this._boardSize;
+    this._cells.clear();
     this._refs.board.replaceChildren(...Array.from({ length: row }).map((_, y) => this.buildRow(y)));
     this.dispatchBombs();
   }
 
   private buildRow(y: number): HTMLDivElement {
     const [_, col] = this._boardSize;
-    const row = createElement('div', { attrs: { class: 'grid-row' } });
+    const row = <div class="grid-row" />;
     Array.from({ length: col }).forEach((_, x) => {
       this.buildCell(x, y, row);
     });
@@ -94,11 +95,8 @@ export class BoardComponent extends Jadis {
   }
 
   private buildCell(x: number, y: number, row: HTMLDivElement): CellComponent {
-    const cell = createElement(
-      CellComponent,
-      { attrs: { class: 'grid-cell' }, props: { coordinates: { x, y } } },
-      row
-    );
+    const cell = <CellComponent class="grid-cell" coordinates={{ x, y }} />;
+    row.appendChild(cell);
     cell.events.register('clicked', this.cellClicked.bind(this, cell));
     cell.events.register('flagged', () => this._flaggedCount.set((v) => v + 1));
     cell.events.register('unflagged', () => this._flaggedCount.set((v) => v - 1));

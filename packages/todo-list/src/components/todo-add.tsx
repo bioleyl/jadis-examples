@@ -1,4 +1,4 @@
-import { css, html, Jadis } from '@jadis/core';
+import { css, Jadis } from '@jadis/core';
 
 const style = css`
   .todo-add {
@@ -42,13 +42,15 @@ export class TodoAdd extends Jadis {
     });
   }
 
-  templateHtml(): DocumentFragment {
-    return html`
+  templateHtml(): Node {
+    return (
       <div class="todo-add">
         <input type="text" class="todo-input" placeholder="Add a new todo..." autofocus />
-        <button class="add-button">Add</button>
+        <button type="button" class="add-button">
+          Add
+        </button>
       </div>
-    `;
+    );
   }
 
   templateCss(): string {

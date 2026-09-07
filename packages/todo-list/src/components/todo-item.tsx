@@ -1,4 +1,4 @@
-import { css, html, Jadis } from '@jadis/core';
+import { css, Jadis } from '@jadis/core';
 
 const style = css`
   .todo-item {
@@ -56,14 +56,16 @@ export class TodoItem extends Jadis {
     });
   }
 
-  templateHtml(): DocumentFragment {
-    return html`
+  templateHtml(): Node {
+    return (
       <div class="todo-item">
         <input type="checkbox" class="todo-checkbox" />
-        <span class="todo-text"></span>
-        <button class="delete-button">Delete</button>
+        <span class="todo-text" />
+        <button type="button" class="delete-button">
+          Delete
+        </button>
       </div>
-    `;
+    );
   }
 
   templateCss(): string {

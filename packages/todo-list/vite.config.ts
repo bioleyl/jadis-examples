@@ -1,5 +1,5 @@
 // packages/app-one/vite.config.ts
-import { baseConfig } from '../../vite.base';
+import { baseConfig } from '../../vite.base.js';
 
 export default {
   ...baseConfig,

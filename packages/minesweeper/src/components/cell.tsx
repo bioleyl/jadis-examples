@@ -1,4 +1,4 @@
-import { css, html, Jadis } from '@jadis/core';
+import { css, Jadis } from '@jadis/core';
 
 import { appBus } from '../services/bus.service';
 import { rules } from '../services/rules.service';
@@ -78,8 +78,8 @@ export class CellComponent extends Jadis {
     this.onBus(appBus, 'gameWon', this.onGameWon.bind(this));
   }
 
-  templateHtml(): DocumentFragment {
-    return html`<span class="content"></span>`;
+  templateHtml(): Node {
+    return <span class="content" />;
   }
 
   templateCss(): string {
@@ -132,7 +132,7 @@ export class CellComponent extends Jadis {
   }
 
   private onMouseLeave(): void {
-    if (this._gameOver || this.isRevealed || !this._isPushed) {
+    if (this._gameOver || this.isRevealed || !this._isPushed.get()) {
       return;
     }
     this._isPushed.set(false);

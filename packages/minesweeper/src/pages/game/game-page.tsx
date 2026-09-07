@@ -1,4 +1,4 @@
-import { assert, html, Jadis } from '@jadis/core';
+import { assert, Jadis } from '@jadis/core';
 
 import { BoardComponent } from '../../components/board';
 import { myRouter } from '../../router';
@@ -41,7 +41,7 @@ class GamePage extends Jadis {
   }));
 
   onConnect(): void {
-    this.on(this._refs.backButton, 'click', () => myRouter.gotoName('MainPage'));
+    this.on(this._refs.backButton, 'click', () => myRouter.goto('main'));
     this.on(this._refs.resetButton, 'click', this.startGame.bind(this));
     this.onBus(appBus, 'gameOver', this.gameOver.bind(this));
     this.onBus(appBus, 'gameWon', this.gameWon.bind(this));
@@ -52,20 +52,24 @@ class GamePage extends Jadis {
     this.startGame();
   }
 
-  templateHtml(): DocumentFragment {
-    return html`
+  templateHtml(): Node {
+    return (
       <div class="content">
-        <div class="face"></div>
-        <p>Mines to detect: <span id="mines-left">0</span></p>
-        ${BoardComponent.toTemplate()}
+        <div class="face" />
+        <p>
+          Mines to detect: <span id="mines-left">0</span>
+        </p>
+        <BoardComponent />
         <div class="game-status game-over">Game Over!</div>
         <div class="game-status game-won">You won!</div>
         <div class="footer">
-          <button id="back">Back to main screen</button>
-          <button id="reset" style="display: none;">Restart Game</button>
+          <button id="back" type="button">Back to main screen</button>
+          <button id="reset" type="button" style="display: none;">
+            Restart Game
+          </button>
         </div>
       </div>
-    `;
+    );
   }
 
   templateCss(): string {

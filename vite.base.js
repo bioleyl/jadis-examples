@@ -1,5 +1,3 @@
-import { defineConfig } from 'vite';
-
-export const baseConfig = defineConfig({
+export const baseConfig = {
   // shared settings
-});
+};

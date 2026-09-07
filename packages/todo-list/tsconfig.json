@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@jadis/core",
     "rootDir": "src"
   },
   "exclude": ["node_modules", "dist"],

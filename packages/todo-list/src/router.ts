@@ -1,6 +1,13 @@
-import { Router } from '@jadis/core';
+import { defineRoutes, Router } from '@jadis/core';
 
-export const myRouter = new Router({
-  baseUrl: '/jadis-examples/todo-list/',
-  mode: 'hash',
-});
+import { MainPage } from './pages/main/main-page';
+
+export const myRouter = new Router(
+  defineRoutes({
+    main: { page: MainPage, path: '/' },
+  }),
+  {
+    baseUrl: '/jadis-examples/todo-list/',
+    mode: 'hash',
+  }
+);

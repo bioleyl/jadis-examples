@@ -11,7 +11,7 @@ export class TodoService {
     const storedTodos = localStorage.getItem('todos');
     if (storedTodos) {
       this._todos.push(...JSON.parse(storedTodos));
-      this._id = Math.max(...this._todos.map((todo) => todo.id)) + 1;
+      this._id = Math.max(0, ...this._todos.map((todo) => todo.id));
     }
   }
 
