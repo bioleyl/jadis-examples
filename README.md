@@ -10,6 +10,7 @@ Each subdirectory contains a self-contained example project. You can explore dif
 jadis-examples/
 └── packages/
     ├── todo-list/     <-- A simple todo-list example
+    ├── cooking/       <-- A simple recipe app example
     └── minesweeper/   <-- The Minesweeper game
 ```
 
@@ -18,6 +19,7 @@ jadis-examples/
 Each example is deployed to github pages. You can test them individually.
 
 - [Todo-list](https://bioleyl.github.io/jadis-examples/todo-list/)
+- [Cooking](https://bioleyl.github.io/jadis-examples/cooking/)
 - [Minesweeper](https://bioleyl.github.io/jadis-examples/minesweeper/)
 
 ## Getting Started

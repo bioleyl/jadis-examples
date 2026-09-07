@@ -15,6 +15,18 @@ importers:
         specifier: ^8.2.2
         version: 8.2.2
 
+  packages/cooking:
+    devDependencies:
+      '@jadis/core':
+        specifier: ^1.0.0
+        version: 1.0.0
+      typescript:
+        specifier: ^7.0.2
+        version: 7.0.2
+      vite:
+        specifier: ^8.2.2
+        version: 8.2.2
+
   packages/minesweeper:
     devDependencies:
       '@jadis/core':

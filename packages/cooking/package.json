@@ -1,0 +1,17 @@
+{
+  "devDependencies": {
+    "@jadis/core": "^1.0.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  },
+  "name": "jadis-examples-cooking",
+  "packageManager": "pnpm@10.14.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "preview": "vite preview"
+  },
+  "type": "module",
+  "version": "0.0.0"
+}
