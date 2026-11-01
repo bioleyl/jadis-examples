@@ -11,6 +11,7 @@ jadis-examples/
 └── packages/
     ├── todo-list/     <-- A simple todo-list example
     ├── cooking/       <-- A simple recipe app example
+    ├── cooking-ssr/   <-- The recipes rendered on the server by Fastify, then taken over in the browser
     └── minesweeper/   <-- The Minesweeper game
 ```
 
@@ -21,6 +22,8 @@ Each example is deployed to github pages. You can test them individually.
 - [Todo-list](https://bioleyl.github.io/jadis-examples/todo-list/)
 - [Cooking](https://bioleyl.github.io/jadis-examples/cooking/)
 - [Minesweeper](https://bioleyl.github.io/jadis-examples/minesweeper/)
+
+The server rendering example (`cooking-ssr`) needs a Node server: run it locally (see its README).
 
 ## Getting Started
 

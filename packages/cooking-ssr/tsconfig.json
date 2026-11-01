@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@jadis/core",
+    "types": ["vite/client", "node"]
+  },
+  "exclude": ["node_modules", "dist"],
+  "extends": "../../tsconfig.base.json",
+  "include": ["src", "server"]
+}
